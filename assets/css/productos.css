@@ -1,0 +1,49 @@
+body {
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .navbar {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  h1 {
+    font-size: 2rem;
+    color: #333;
+  }
+  
+  .table {
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  .modal-header {
+    border-bottom: 2px solid #ddd;
+  }
+  
+  button {
+    border-radius: 8px;
+    font-size: 0.9rem;
+  }
+
+  .cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px; 
+    padding: 16px;
+}
+
+.card {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: scale(1.05); /* Efecto al pasar el mouse */
+}
+
+.card-img-top {
+    object-fit: cover; /* Asegura que la imagen no se deforme */
+}
+
+  

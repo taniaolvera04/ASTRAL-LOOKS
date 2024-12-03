@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <title>PERFIL DE USUARIO</title>
+</head>
+<body class="bg-light text-center">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <span class="navbar-brand h1">INICIO</span>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="info.html">CUENTA</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="Ucitas.html">CITA</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="Ucomentarios.html">OPINIONES</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div id="user-info" class="card mx-auto" style="width: 22rem;">
+            <img id="user-photo" class="card-img-top" alt="Foto de perfil" src="assets/imgUsers/icon.png">
+            <div class="card-body">
+                <h5 id="user-name" class="card-title text-primary"></h5>
+                <p id="user-email" class="card-text"><strong>Email:</strong></p>
+                <p><strong>Contraseña:</strong> ********</p>
+
+                <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#updateProfileModal">Actualizar Perfil</button>
+                <button class="btn btn-danger mt-3" onclick="cerrarSesion()">Cerrar Sesión</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para actualizar perfil -->
+    <div class="modal fade" id="updateProfileModal" tabindex="-1" aria-labelledby="updateProfileModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateProfileModalLabel">Actualizar Perfil</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="update-profile-form" onsubmit="event.preventDefault();">
+                        <label for="update-name" class="form-label">Nombre:</label>
+                        <input type="text" id="update-name" class="form-control mb-3" placeholder="Nombre" required>
+
+                        <label for="update-photo" class="form-label">Foto de perfil:</label>
+                        <input type="file" id="update-photo" class="form-control mb-3" accept="image/*" onchange="previewPhoto()">
+
+                        <img id="photo-preview" class="img-thumbnail mb-3 m-auto" alt="Vista previa de foto" style="display: none; max-height: 200px;">
+
+                        <button onclick="actualizarPerfil()" class="btn btn-success w-100">Guardar Cambios</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/sweetalert2.all.min.js"></script>
+    <script src="assets/js/login.js"></script>
+</body>
+</html>
