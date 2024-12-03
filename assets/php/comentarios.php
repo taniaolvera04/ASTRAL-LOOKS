@@ -66,20 +66,37 @@ if($_POST){
 
             case "updateOpinion":
                 $id_o = $_POST['ido'];
-                $a = $_POST['corte'];
+                $a = $_POST['opinion'];
             
-                    $sql = "UPDATE cortes SET corte='$a', precio='$e' WHERE id_c=$id_c";
+                    $sql = "UPDATE opiniones SET opinion='$a' WHERE id_o=$id_o";
                 if ($cx->query($sql)) {
                     $valido['success'] = true;
-                    $valido['mensaje'] = "SE ACTUALIZÓ CORRECTAMENTE EL CORTE";
+                    $valido['mensaje'] = "SE ACTUALIZÓ CORRECTAMENTE LA OPINIÓN";
                 } else {
                     $valido['success'] = false;
-                    $valido['mensaje'] = "ERROR AL ACTUALIZAR EN BD: " . $cx->error;
+                    $valido['mensaje'] = "ERROR AL ACTUALIZAR OPINIÓN EN BD: " . $cx->error;
                 }
     
                 echo json_encode($valido);
-                
             break;
+
+
+            case "deleteOpinion":
+                $ido = intval($_POST['ido'] ?? 0);
+                $sql = "DELETE FROM opiniones WHERE id_o = ?";
+                $stmt = $cx->prepare($sql);
+                $stmt->bind_param("i", $ido);
+    
+                if ($stmt->execute()) {
+                    $valido['success'] = true;
+                    $valido['mensaje'] = "SE ELIMINÓ LA OPINIÓN CORRECTAMENTE";
+                } else {
+                    $valido['success'] = false;
+                    $valido['mensaje'] = "ERROR AL ELIMINAR OPINIÓN EN BD";
+                }
+                echo json_encode($valido);
+                break;
+    
         }
     
 }else{
