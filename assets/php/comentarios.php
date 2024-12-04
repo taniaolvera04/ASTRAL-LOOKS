@@ -109,7 +109,100 @@ if($_POST){
                 
                     echo json_encode($rows);
                     break;
+
+
+
+                    case "comentar":       
+                        $id_o=$_POST['ido'];
+                        $email=$_POST['email'];
+                        $comentario=$_POST['comentario'];
+
+                        $check = "SELECT id FROM users WHERE email='$email'";
+                        $result = $cx->query($check);
+                        
+                        if ($result->num_rows > 0) {
+                            $row = $result->fetch_assoc();
+                            $id = $row['id'];
+                        
+                        
+                            $sql="INSERT INTO comentarios (comentario,user_id,id_o) VALUES('$comentario',1,$id_o)";
+                            if($cx->query($sql)){
+                                $valido['success']=true;
+                                $valido['mensaje']="SE PUBLICÓ CORRECTAMENTE";
+                            }else {
+                                $valido['success']=false;
+                                $valido['mensaje']="ERROR AL PUBLICAR";
+                            }
+                        } else {
+                            $valido['success'] = false;
+                            $valido['mensaje'] = "USUARIO NO DISPONIBLE";
+                        }      
+                     
+                    echo json_encode($valido);
+            break;
+            
+
+                    case "verComentarios":
+                        $id_o=$_POST['ido'];
+                        $result=$cx->query("SELECT users.name, users.foto, users.id, comentarios.fecha, comentarios.comentario, comentarios.id_co, comentarios.id_o
+                        FROM users INNER JOIN comentarios ON(users.id=comentarios.user_id) WHERE comentarios.id_o=$id_o ORDER BY comentarios.fecha DESC");
+                        $rows=array();
+                        while($row=$result->fetch_assoc() ){
+                            $rows[]=$row;
+                        }
+                        echo json_encode($rows);
+                    break;
+            
                 
+
+                    case "selectComment":
+                        $id_co = $_POST['id_co'];
+                        $result = $cx->query("SELECT users.name, users.foto, comentarios.comentario, comentarios.id_co 
+                                              FROM comentarios 
+                                              INNER JOIN users ON users.id = comentarios.user_id 
+                                              WHERE comentarios.id_co = '$id_co'");
+                    
+                        if ($result->num_rows > 0) {
+                            $row = $result->fetch_assoc();
+                            echo json_encode($row);
+                        } else {
+                            echo json_encode(array('error' => 'No se encontró la opinión.'));
+                        }
+                        break;
+
+
+                        case "updateComment":
+                            $id_co = $_POST['idco'];
+                            $a = $_POST['comentario'];
+                        
+                                $sql = "UPDATE comentarios SET comentario='$a' WHERE id_co=$id_co";
+                            if ($cx->query($sql)) {
+                                $valido['success'] = true;
+                                $valido['mensaje'] = "SE ACTUALIZÓ CORRECTAMENTE EL COMENTARIO";
+                            } else {
+                                $valido['success'] = false;
+                                $valido['mensaje'] = "ERROR AL ACTUALIZAR COMENTARIO EN BD: " . $cx->error;
+                            }
+                
+                            echo json_encode($valido);
+                        break;
+
+
+                        case "delComment":
+                            $id_co = intval($_POST['idco'] ?? 0);
+                            $sql = "DELETE FROM comentarios WHERE id_co = ?";
+                            $stmt = $cx->prepare($sql);
+                            $stmt->bind_param("i", $id_co);
+                
+                            if ($stmt->execute()) {
+                                $valido['success'] = true;
+                                $valido['mensaje'] = "SE ELIMINÓ EL COMENTARIO CORRECTAMENTE";
+                            } else {
+                                $valido['success'] = false;
+                                $valido['mensaje'] = "ERROR AL ELIMINAR COMENTARIO EN BD";
+                            }
+                            echo json_encode($valido);
+                            break;
     
         }
     
