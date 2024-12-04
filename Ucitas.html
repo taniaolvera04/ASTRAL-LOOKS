@@ -31,12 +31,14 @@
     <form id="form-agendar-cita" class="mb-5">
       <div class="mb-3">
         <label for="asunto" class="form-label">Asunto</label>
-        <select class="form-select" id="asunto" required>
-          <option value="Corte Masculino,200">Corte Masculino - $200</option>
-          <option value="Corte Femenino,250">Corte Femenino - $250</option>
-          <option value="Peinado Casual,150">Peinado Casual - $150</option>
-          <option value="Peinado Formal,300">Peinado Formal - $300</option>
-        </select>
+        <input type="hidden" id="asunto" name="asunto">
+      </div>
+      <div class="mb-3">
+        <label for="corteSeleccionado" class="form-label">Corte Seleccionado</label>
+        <div id="corteSeleccionado" class="border p-2">Ningún corte seleccionado</div>
+        <button type="button" class="btn btn-secondary mt-2" data-bs-toggle="modal" data-bs-target="#modalCortes">
+          Seleccionar Corte
+        </button>
       </div>
       <div class="mb-3">
         <label for="fecha" class="form-label">Fecha</label>
@@ -79,6 +81,24 @@
     </div>
   </div>
 </div>
+
+
+
+<!-- Modal para selección de cortes -->
+<div class="modal fade" id="modalCortes" tabindex="-1" aria-labelledby="modalCortesLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalCortesLabel">Selecciona un Corte</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="listaCortes">
+        <!-- Aquí se cargarán dinámicamente los cortes -->
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <script src="assets/js/bootstrap.bundle.min.js"></script>
 <script src="assets/js/sweetalert2.all.min.js"></script>

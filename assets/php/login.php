@@ -16,6 +16,7 @@ try {
                 $name = trim($_POST['name'] ?? '');
                 $email = trim($_POST['email'] ?? '');
                 $password = trim($_POST['password'] ?? '');
+                $numerotel = trim($_POST['numerotel']??'');  // Nuevo campo
 
                 if (empty($name) || empty($email) || empty($password)) {
                     $response['mensaje'] = "Todos los campos son obligatorios.";
@@ -25,9 +26,9 @@ try {
                 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
                 $profilePicture = 'assets/imgUsers/icon.png';
 
-                $sql = "INSERT INTO users (name, email, password, foto) VALUES (?, ?, ?, ?)";
+                $sql = "INSERT INTO users (name, email, password, numerotel, foto) VALUES (?, ?, ?, ?, ?)";
                 $stmt = $cx->prepare($sql);
-                $stmt->bind_param("ssss", $name, $email, $hashedPassword, $profilePicture);
+                $stmt->bind_param("sssss", $name, $email, $hashedPassword, $numerotel, $profilePicture);
 
                 if ($stmt->execute()) {
                     $response['success'] = true;
@@ -41,7 +42,7 @@ try {
                 $email = trim($_POST['email'] ?? '');
                 $password = trim($_POST['password'] ?? '');
 
-                $sql = "SELECT id, name, password, foto FROM users WHERE email = ?";
+                $sql = "SELECT id, name, password, numerotel, foto FROM users WHERE email = ?";
                 $stmt = $cx->prepare($sql);
                 $stmt->bind_param("s", $email);
                 $stmt->execute();
@@ -56,6 +57,7 @@ try {
 
                         $response['success'] = true;
                         $response['mensaje'] = "Bienvenido, " . $user['name'];
+                        $response['numerotel'] = $user['numerotel']; // Añadir el teléfono a la respuesta
                         $response['foto'] = $user['foto'];
                         $response['isAdmin'] = ($user['id'] === 1);
                     } else {
@@ -66,32 +68,33 @@ try {
                 }
                 break;
 
-            case 'updateProfile':
-                if (isset($_SESSION['id'])) {
-                    $userId = $_SESSION['id'];
-                    $nuevoNombre = trim($_POST['name'] ?? '');
-                    $archivoSubido = $_FILES['photo'] ?? null;
-
-                    if (empty($nuevoNombre)) {
-                        $response['mensaje'] = 'El nombre no puede estar vacío.';
-                        break;
-                    }
-
-                    $sql = "UPDATE users SET name = ? WHERE id = ?";
-                    $stmt = $cx->prepare($sql);
-                    $stmt->bind_param("si", $nuevoNombre, $userId);
-                    if (!$stmt->execute()) {
-                        $response['mensaje'] = 'Error al actualizar el nombre.';
-                        break;
+                case 'updateProfile':
+                    if (isset($_SESSION['id'])) {
+                        $userId = $_SESSION['id'];
+                        $nuevoNombre = trim($_POST['name'] ?? '');
+                        $nuevoTel = trim($_POST['tel'] ?? ''); // Nuevo campo
+                        $archivoSubido = $_FILES['photo'] ?? null;
+                
+                        if (empty($nuevoNombre) || empty($nuevoTel)) {
+                            $response['mensaje'] = 'El nombre y teléfono no pueden estar vacíos.';
+                            break;
+                        }
+                
+                        $sql = "UPDATE users SET name = ?, numerotel = ? WHERE id = ?";
+                        $stmt = $cx->prepare($sql);
+                        $stmt->bind_param("ssi", $nuevoNombre, $nuevoTel, $userId);
+                        if (!$stmt->execute()) {
+                            $response['mensaje'] = 'Error al actualizar el perfil.';
+                            break;
                     }
 
                     if ($archivoSubido && $archivoSubido['error'] === 0) {
-                        $directorioDestino = $_SERVER['DOCUMENT_ROOT'] . "/01PROYECTO5/assets/imgUsers/";
+                        $directorioDestino = $_SERVER['DOCUMENT_ROOT'] . "/ASTRAL-LOOKS/assets/imgUsers/";
                         $nombreArchivo = uniqid() . "_" . basename($archivoSubido['name']);
                         $rutaCompleta = $directorioDestino . $nombreArchivo;
                         
                         if (move_uploaded_file($archivoSubido['tmp_name'], $rutaCompleta)) {
-                            $rutaRelativa = "/01PROYECTO5/assets/imgUsers/$nombreArchivo";
+                            $rutaRelativa = "/ASTRAL-LOOKS/assets/imgUsers/$nombreArchivo";
                             $sqlFoto = "UPDATE users SET foto = ? WHERE id = ?";
                             $stmtFoto = $cx->prepare($sqlFoto);
                             $stmtFoto->bind_param("si", $rutaRelativa, $userId);
