@@ -7,7 +7,7 @@ const cargarOpinions = async () => {
     let respuesta = await fetch("assets/php/comentarios.php", {method: 'POST', body: datos});
     let json = await respuesta.json();
     
-    console.log(json); // Verifica si hay datos aquí
+    console.log(json); 
 
     var divO = ``;
     json.map(opi => {
