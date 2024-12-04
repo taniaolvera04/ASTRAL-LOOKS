@@ -16,8 +16,9 @@ json.data.forEach(item => {
     tablaHTML += `
         <div class="card" style="width: 200px; margin: 10px;">
             <img src="${imagenPath}" height="200px" class="card-img-top" alt="Imagen del corte">
-            <div class="card-body">
+            <div class="card-body text-center">
                 <h5 class="card-title">${item[1]}</h5>
+                <p><b>PRECIO: </b>$${item[2]}</p>
                 </button>
             </div>
         </div>
