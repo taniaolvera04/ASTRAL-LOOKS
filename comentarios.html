@@ -44,7 +44,27 @@
   <!-- Main Content -->
   <div class="container mt-5">
     <h1 class="text-center mb-4">OPINIONES DE LA PELUQUERÍA</h1>
+     <div class="container-fluid w-75 m-auto mt-3 text-center">
+
+        <div class="card w-50 m-auto p-3 my-2">
     
+            <div class="text-center mx-5">
+                <img src="assets/imgUsers/icon.png" id="user-photo" height="40px" style="border-radius: 50%;">
+            <span class="my-4 h5" id="user-name"></span>
+            </div>
+    
+            <h3 class="m-2">CREAR OPINIÓN</h3>
+            <textarea name="" id="opinion" cols="5" rows="5" class="form-control my-2" style="resize: none;" placeholder="¡Déjannos saber tus opiniones! . . . 💈"></textarea>
+            <button class="btn btn-primary" onclick="guardarOpinion()"><h5>PUBLICAR</h5></button>
+        </div>
+    </div>
+    
+    
+    <div class="container-fluid w-75 m-auto mt-3">
+       <div class="container" id="divOpinions">
+    
+       </div>
+    </div>
   </div>
 
   <script src="assets/js/bootstrap.bundle.min.js"></script>

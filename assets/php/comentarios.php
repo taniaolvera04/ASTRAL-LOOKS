@@ -96,6 +96,20 @@ if($_POST){
                 }
                 echo json_encode($valido);
                 break;
+
+
+                case "selectAll":
+                    $result = $cx->query("SELECT users.id, users.name, users.foto, opiniones.opinion, opiniones.fecha, opiniones.id_o FROM opiniones 
+                        INNER JOIN users ON users.id = opiniones.user_id ORDER BY opiniones.fecha DESC"); 
+                    $rows = array();
+                    
+                    while ($row = $result->fetch_assoc()) {
+                        $rows[] = $row;
+                    }
+                
+                    echo json_encode($rows);
+                    break;
+                
     
         }
     
