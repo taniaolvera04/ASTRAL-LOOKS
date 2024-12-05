@@ -66,7 +66,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <!--<tr>
           <td>Recogido Elegante</td>
           <td>Perfecto para bodas y eventos formales</td>
           <td>45</td>
@@ -87,56 +87,106 @@
             <button class="btn btn-warning btn-sm">Editar</button>
             <button class="btn btn-danger btn-sm">Eliminar</button>
           </td>
-        </tr>
+        </tr>-->
       </tbody>
     </table>
+  </div>
 
 
     
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header bg-secondary text-white">
-            <h5 class="modal-title" id="exampleModalLabel">Agregar Peinado</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <!-- Modal para Agregar Peinado -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-secondary text-white">
+        <h5 class="modal-title" id="exampleModalLabel">Agregar Peinado</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="nombrePeinado" class="form-label">Nombre del Peinado</label>
+            <input type="text" id="nombrePeinado" class="form-control" placeholder="Ej. Recogido elegante">
           </div>
-          <div class="modal-body">
-            <form>
-              <div class="mb-3">
-                <label for="nombrePeinado" class="form-label">Nombre del Peinado</label>
-                <input type="text" id="nombrePeinado" class="form-control" placeholder="Ej. Recogido elegante">
-              </div>
-              <div class="mb-3">
-                <label for="descripcion" class="form-label">Descripción</label>
-                <textarea id="descripcion" class="form-control" rows="3" placeholder="Ej. Ideal para eventos formales"></textarea>
-              </div>
-              <div class="mb-3">
-                <label for="tiempo" class="form-label">Tiempo Estimado (min)</label>
-                <input type="number" id="tiempo" class="form-control" placeholder="Ej. 45">
-              </div>
-              <div class="mb-3">
-                <label for="precio" class="form-label">Precio</label>
-                <input type="number" id="precio" class="form-control" placeholder="Ej. 200">
-              </div>
-              <div class="mb-3">
-                <label for="imagen" class="form-label">Imagen del Peinado</label>
-                <input type="file" id="imagen" class="form-control">
-              </div>
-            </form>
+          <div class="mb-3">
+            <label for="descripcion" class="form-label">Descripción</label>
+            <textarea id="descripcion" class="form-control" rows="3" placeholder="Ej. Ideal para eventos formales"></textarea>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-            <button type="button" class="btn btn-success">Agregar</button>
+          <div class="mb-3">
+            <label for="tiempo" class="form-label">Tiempo Estimado (min)</label>
+            <input type="number" id="tiempo" class="form-control" placeholder="Ej. 45">
           </div>
-        </div>
+          <div class="mb-3">
+            <label for="precio" class="form-label">Precio</label>
+            <input type="number" id="precio" class="form-control" placeholder="Ej. 200">
+          </div>
+          <div class="mb-3">
+            <label for="imagen" class="form-label">Imagen del Peinado</label>
+            <input type="file" id="imagen" class="form-control" onchange="vistaPrevia('imagen', 'previewGuardar')">
+          </div>
+          <div class="mb-3 text-center">
+            <img id="previewGuardar" src="#" alt="Vista previa" class="rounded img-thumbnail" style="display:none; max-width: 100%; height: auto;">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-success" onclick="guardarPeinado()">Agregar</button>
       </div>
     </div>
-
-
   </div>
+</div>
+
+<!-- Modal para Actualizar Peinado -->
+<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-secondary text-white">
+        <h5 class="modal-title" id="updateModalLabel">Actualizar Peinado</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <input type="hidden" id="updateIdPeinado">
+          <div class="mb-3">
+            <label for="updateNombrePeinado" class="form-label">Nombre del Peinado</label>
+            <input type="text" id="updateNombrePeinado" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label for="updateDescripcion" class="form-label">Descripción</label>
+            <textarea id="updateDescripcion" class="form-control" rows="3"></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="updateTiempo" class="form-label">Tiempo Estimado (min)</label>
+            <input type="number" id="updateTiempo" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label for="updatePrecio" class="form-label">Precio</label>
+            <input type="number" id="updatePrecio" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label for="updateImagen" class="form-label">Imagen del Peinado</label>
+            <input type="file" id="updateImagen" class="form-control" onchange="vistaPrevia('updateImagen', 'previewActualizar')">
+          </div>
+          <div class="mb-3 text-center">
+            <img id="previewActualizar" src="#" alt="Vista previa" class="rounded img-thumbnail" style="display:none; max-width: 100%; height: auto;">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-warning" onclick="actualizarPeinado()">Actualizar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 
   <script src="assets/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/sweetalert2.all.min.js"></script>
+  <script src="assets/js/peinados.js"></script>
 </body>
 
 </html>

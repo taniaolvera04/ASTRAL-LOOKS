@@ -20,52 +20,46 @@ if (!$action) {
 }
 
 // Acción para agendar cita
+// Modificar la consulta según los nombres correctos de columnas
 if ($action === 'agendarCita') {
-    $corte_id = $_POST['corte_id'] ?? null;
-    $fecha = $_POST['fecha'] ?? null;
-
-    if (!$corte_id || !$fecha) {
-        echo json_encode(['success' => false, 'error' => 'Datos incompletos']);
-        exit;
-    }
-
-    // Obtener el nombre del corte y su costo
-    $stmtCorte = $cx->prepare("SELECT corte, precio FROM cortes WHERE id_c = ?");
-    $stmtCorte->bind_param("i", $corte_id);
-    $stmtCorte->execute();
-    $resultadoCorte = $stmtCorte->get_result()->fetch_assoc();
-
-    if (!$resultadoCorte) {
-        echo json_encode(['success' => false, 'error' => 'Corte no encontrado']);
-        exit;
-    }
-
-    $asunto = $resultadoCorte['corte'];
-    $costo = $resultadoCorte['precio'];
-
-    $stmt = $cx->prepare("INSERT INTO citas (user_id, asunto, fecha, finalizado, costo, corte_id) VALUES (?, ?, ?, 0, ?, ?)");
-    $stmt->bind_param("issdi", $userId, $asunto, $fecha, $costo, $corte_id);
-
-    if ($stmt->execute()) {
-        $response['success'] = true;
-    } else {
-        $response['success'] = false;
-        $response['error'] = $stmt->error; // Capturar el error de SQL
-    }
-
-    echo json_encode($response);
+    $id = $_POST['id'];
+    $fecha = $_POST['fecha'];
+    $tipo = $_POST['tipo'];
+    
+    // Ajustar el nombre de la columna id según la tabla
+    $tabla = $tipo === "corte" ? "cortes" : "peinados";
+    $idColumna = $tipo === "corte" ? "id_c" : "id_peinado"; // Cambiar según corresponda
+    $columna = $tipo === "corte" ? "corte" : "nombre";
+    
+    $stmt = $cx->prepare("SELECT $columna AS nombre, precio FROM $tabla WHERE $idColumna = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $resultado = $stmt->get_result()->fetch_assoc();
+    
+    $nombre = $resultado['nombre'];
+    $precio = $resultado['precio'];
+    
+    $stmt = $cx->prepare("
+        INSERT INTO citas (user_id, asunto, fecha, finalizado, costo, tipo, id_tipo)
+        VALUES (?, ?, ?, 0, ?, ?, ?)
+    ");
+    $stmt->bind_param("issdsi", $userId, $nombre, $fecha, $precio, $tipo, $id);
+    $stmt->execute();
+    
+    echo json_encode(['success' => true]);
     exit;
 }
+
+
 
 
 
 // Acción para obtener citas pendientes
 if ($action === 'obtenerPendientes') {
     $stmt = $cx->prepare("
-        SELECT c.*, co.corte, co.precio, u.name, u.foto 
-        FROM citas c 
-        INNER JOIN cortes co ON c.corte_id = co.id_c
-        INNER JOIN users u ON c.user_id = u.id 
+        SELECT c.id, c.asunto, c.fecha, c.costo, c.tipo,u.name, u.foto
+        FROM citas c
+        INNER JOIN users u ON c.user_id = u.id
         WHERE c.finalizado = 0 AND u.id = ?
     ");
     $stmt->bind_param("i", $userId);
@@ -73,6 +67,7 @@ if ($action === 'obtenerPendientes') {
     echo json_encode($stmt->get_result()->fetch_all(MYSQLI_ASSOC));
     exit;
 }
+
 
 // Acción para marcar como atendido con telefono
 if ($action === 'marcarAtendido') {
@@ -131,10 +126,8 @@ if ($action === 'eliminarCita') {
 // Acción para obtener el historial de citas
 if ($action === 'obtenerHistorial') {
     $stmt = $cx->prepare("
-        SELECT c.fecha, co.corte, co.precio, u.name AS administrador
-        FROM citas c 
-        INNER JOIN cortes co ON c.corte_id = co.id_c
-        INNER JOIN users u ON c.user_id = u.id
+        SELECT c.fecha, c.asunto, c.costo, c.tipo 
+        FROM citas c
         WHERE c.finalizado = 1 AND c.user_id = ?
     ");
     $stmt->bind_param("i", $userId);
@@ -160,6 +153,22 @@ if ($action === 'obtenerCortes') {
     exit;
 }
 
+// Acción para obtener peinados
+if ($action === 'obtenerpeinados') {
+    if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
+        http_response_code(405); // Código de estado: Método no permitido
+        echo json_encode(['error' => 'Método no permitido, solo GET']);
+        exit;
+    }
+    // Continuar con la consulta de peinados
+    $result = $cx->query("SELECT * FROM peinados");
+    if ($result) {
+        echo json_encode($result->fetch_all(MYSQLI_ASSOC));
+    } else {
+        echo json_encode(['error' => 'Error al obtener los peinados']);
+    }
+    exit;
+}
 
 // Si no se reconoce la acción, responder con error
 echo json_encode(['error' => 'Acción no válida']);

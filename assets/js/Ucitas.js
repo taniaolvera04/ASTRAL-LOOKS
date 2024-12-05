@@ -1,6 +1,9 @@
 
 document.addEventListener("DOMContentLoaded", () => {
   cargarCortes();
+  cargarpeinados();
+  cargarCitasPendientes();
+  cargarHistorialCitas();
 });
 
 async function cargarCortes() {
@@ -38,34 +41,80 @@ async function cargarCortes() {
   }
 }
 
+async function cargarpeinados() {
+  try {
+    const response = await fetch("assets/php/citas.php?action=obtenerpeinados", {
+      method: "GET",
+    });
 
+    const data = await response.json();
+    console.log("Respuesta del servidor:", data);
+
+    if (Array.isArray(data)) {
+      const listapeinados = document.getElementById("listapeinados");
+      listapeinados.innerHTML = "";
+      data.forEach((peinado) => {
+        const item = document.createElement("div");
+        item.className = "d-flex align-items-center mb-3";
+        item.innerHTML = `
+        
+          <img src="assets/imgPeinados/${peinado.imagen}" alt="${peinado.peinado}" class="img-thumbnail me-3" width="60">
+          <div>
+            <h5>${peinado.nombre}</h5>
+            <p>Precio: $${peinado.precio}</p>
+            <p>Descripcion: ${peinado.descripcion}</p>
+            <p>Tiempo: ${peinado.tiempo} minutos</p>
+            <button class="btn btn-primary btn-sm" onclick="seleccionarpeinado('${peinado.nombre}', ${peinado.id_peinado}, ${peinado.precio})">
+              Seleccionar
+            </button>
+          </div>
+          
+        `;
+        listapeinados.appendChild(item);
+      });
+    } else {
+      console.error("Formato de datos incorrecto:", data);
+    }
+  } catch (error) {
+    console.error("Error al cargar los peinados:", error);
+  }
+}
 
 function seleccionarCorte(corte, id, precio) {
   document.getElementById("corteSeleccionado").innerHTML = `${corte} - $${precio}`;
-  document.getElementById("asunto").value = id;  // Campo oculto para enviar ID
+  document.getElementById("asunto").value = id;
+  document.getElementById("tipo").value = "corte"; // Tipo corte.
   bootstrap.Modal.getInstance(document.getElementById("modalCortes")).hide();
 }
+
+function seleccionarpeinado(peinado, id, precio) {
+  document.getElementById("corteSeleccionado").innerHTML = `${peinado} - $${precio}`;
+  document.getElementById("asunto").value = id;
+  document.getElementById("tipo").value = "peinado"; // Tipo peinado.
+  bootstrap.Modal.getInstance(document.getElementById("modalpeinados")).hide();
+}
+
 
 
 document.getElementById("form-agendar-cita").addEventListener("submit", async (e) => {
   e.preventDefault();
-  const corte_id = document.getElementById("asunto").value;
+  const id = document.getElementById("asunto").value;
   const fecha = document.getElementById("fecha").value;
+  const tipo = document.getElementById("tipo").value;
 
-  if (!corte_id || !fecha) {
+  if (!id || !fecha || !tipo) {
     Swal.fire("Error", "Todos los campos son obligatorios", "error");
     return;
   }
-  console.log("Datos enviados:", { corte_id, fecha }); // Agrega esta línea para depurar
 
   const datos = new FormData();
   datos.append("action", "agendarCita");
-  datos.append("corte_id", corte_id);
+  datos.append("id", id);
   datos.append("fecha", fecha);
+  datos.append("tipo", tipo);
 
   const response = await fetch("assets/php/citas.php", { method: "POST", body: datos });
   const result = await response.json();
-  console.log("Respuesta del servidor:", result); // Agrega esta línea para verificar la respuesta
 
   if (result.success) {
     Swal.fire("Éxito", "Cita agendada con éxito", "success");
@@ -74,15 +123,9 @@ document.getElementById("form-agendar-cita").addEventListener("submit", async (e
     Swal.fire("Error", "No se pudo agendar la cita", "error");
   }
 });
-  
-  document.addEventListener("DOMContentLoaded", () => {
-    const usuario = JSON.parse(localStorage.getItem("usuario")) || {};
-    const userName = usuario.name || "Usuario";
-    const userPhoto = usuario.foto || "assets/imgUsers/icon.png";
-  
-    cargarCitasPendientes();
-    cargarHistorialCitas();
-  });
+
+
+
   
   async function cargarCitasPendientes() {
     const response = await fetch("assets/php/citas.php?action=obtenerPendientes");
@@ -99,6 +142,7 @@ document.getElementById("form-agendar-cita").addEventListener("submit", async (e
           <img src="${cita.foto || "assets/imgUsers/icon.png"}" alt="Foto de Perfil" class="rounded-circle" width="60">
           <div class="ms-3">
             <h5>${cita.name}</h5>
+            <p><strong>Tipo:</strong> ${cita.tipo}</p>
             <p><strong>Asunto:</strong> ${cita.asunto}</p>
             <p><strong>Costo:</strong> $${cita.costo}</p>
             <p><strong>Fecha:</strong> ${cita.fecha}</p>
@@ -144,18 +188,20 @@ document.getElementById("form-agendar-cita").addEventListener("submit", async (e
     const response = await fetch("assets/php/citas.php?action=obtenerHistorial");
     const citas = await response.json();
     const tablaHistorial = document.getElementById("tabla-historial");
-    tablaHistorial.innerHTML = ""; 
-
-    citas.forEach(cita => {
+    tablaHistorial.innerHTML = "";
+  
+    citas.forEach((cita) => {
       const fila = document.createElement("tr");
       fila.innerHTML = `
-        <td>${cita.corte}</td>
+        <td>${cita.tipo}</td>
+        <td>${cita.asunto}</td>
         <td>${cita.fecha}</td>
         <td>✔</td>
-        <td>$${cita.precio}</td>
+        <td>$${cita.costo}</td>
       `;
       tablaHistorial.appendChild(fila);
     });
-}
+  }
+  
   
   

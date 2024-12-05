@@ -40,13 +40,18 @@
     <form id="form-agendar-cita" class="mb-5">
       <div class="mb-3">
         <label for="asunto" class="form-label">Asunto</label>
+        <!-- Modificación en el formulario -->
+         <input type="hidden" id="tipo" name="tipo">
         <input type="hidden" id="asunto" name="asunto">
       </div>
       <div class="mb-3">
-        <label for="corteSeleccionado" class="form-label">Corte Seleccionado</label>
+        <label for="corteSeleccionado" class="form-label">Corte/Peinado Seleccionado</label>
         <div id="corteSeleccionado" class="border p-2">Ningún corte seleccionado</div>
         <button type="button" class="btn btn-secondary mt-2" data-bs-toggle="modal" data-bs-target="#modalCortes">
           Seleccionar Corte
+        </button>
+        <button type="button" class="btn btn-secondary mt-2" data-bs-toggle="modal" data-bs-target="#modalpeinados">
+          Seleccionar Peinados
         </button>
       </div>
       <div class="mb-3">
@@ -108,6 +113,20 @@
   </div>
 </div>
 
+<!-- Modal para selección de peinados -->
+<div class="modal fade" id="modalpeinados" tabindex="-1" aria-labelledby="modalpeinadosLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalpeinadosLabel">Selecciona un Peinado</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="listapeinados">
+        <!-- Aquí se cargarán dinámicamente los peinados -->
+      </div>
+    </div>
+  </div>
+</div>
 
 <script src="assets/js/bootstrap.bundle.min.js"></script>
 <script src="assets/js/sweetalert2.all.min.js"></script>
