@@ -10,7 +10,10 @@ const cargarPerfil = () => {
 };
 
 const cargarO = async () => {
+    let email=usuario.email;
+
     let datos = new FormData();
+    datos.append("email",email);
     datos.append("action", "selectAll");
     let respuesta = await fetch("assets/php/comentarios.php", {method: 'POST', body: datos});
     let json = await respuesta.json();

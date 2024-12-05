@@ -38,8 +38,9 @@ if($_POST){
 
 
         case "cargarOpiniones":
+            $email=$_POST['email'];
             $result = $cx->query("SELECT users.id, users.name, users.foto, opiniones.opinion, opiniones.fecha, opiniones.id_o
-            FROM opiniones INNER JOIN users ON(users.id=opiniones.user_id) ORDER BY opiniones.fecha DESC");
+            FROM opiniones INNER JOIN users ON(users.id=opiniones.user_id) WHERE users.email='$email' ORDER BY opiniones.fecha DESC");
             $rows = array();
             while ($row = $result->fetch_assoc()) {
                 $rows[] = $row;
@@ -98,7 +99,22 @@ if($_POST){
                 break;
 
 
+                case "verCom":
+                    $id_o=$_POST['ido'];
+                    $result=$cx->query("SELECT users.name, users.foto, users.id, comentarios.fecha, comentarios.comentario, comentarios.id_co, comentarios.id_o
+                    FROM users INNER JOIN comentarios ON(users.id=comentarios.user_id) WHERE comentarios.id_o=$id_o ORDER BY comentarios.fecha DESC");
+                    $rows=array();
+                    while($row=$result->fetch_assoc() ){
+                        $rows[]=$row;
+                    }
+                    echo json_encode($rows);
+                break;
+
+
+//MÉTODOS ADMIN
+
                 case "selectAll":
+                   $email=$_POST['email'];
                     $result = $cx->query("SELECT users.id, users.name, users.foto, opiniones.opinion, opiniones.fecha, opiniones.id_o FROM opiniones 
                         INNER JOIN users ON users.id = opiniones.user_id ORDER BY opiniones.fecha DESC"); 
                     $rows = array();

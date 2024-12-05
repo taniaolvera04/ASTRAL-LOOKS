@@ -42,7 +42,10 @@ const guardarOpinion=async()=>{
 
 
 const cargarOpinions=async()=>{
+    let email=usuario.email;
+
     let datos=new FormData();
+    datos.append("email",email)
     datos.append("action","cargarOpiniones");
     let respuesta=await fetch("assets/php/comentarios.php",{method:'POST',body:datos});
     let json= await respuesta.json();
@@ -85,6 +88,24 @@ const cargarOpinions=async()=>{
         </div>
     
     </div>
+
+
+     <div class="accordion w-50 m-auto" id="accordionExample">
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button onclick="verCom(${opi.id_o})" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${opi.id_o}" aria-expanded="true" aria-controls="collapseOne">
+                    Ver comentarios . . .   
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gray" class="bi bi-chat-dots-fill mx-2" viewBox="0 0 16 16">
+                        <path d="M16 8c0 3.866-3.582 7-8 7a9 9 0 0 1-2.347-.306c-.584.296-1.925.864-4.181 1.234-.2.032-.352-.176-.273-.362.354-.836.674-1.95.77-2.966C.744 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7M5 8a1 1 0 1 0-2 0 1 1 0 0 0 2 0m4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0m3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
+                    </svg>
+                </button>
+            </h2>
+            
+            <div id="collapse${opi.id_o}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+              
+        </div>
+    </div>
+</div>
     
     `
     });
@@ -196,4 +217,45 @@ const delOpinion = async (ido) => {
         }
     });
 }
+
+
+
+const verCom = async (ido) => {
+    let count = 0;
+    var listaComentarios = `<ul class="list-group list-group-flush">`;
+
+    let datos = new FormData();
+    datos.append("ido", ido); 
+    datos.append("action", "verCom");
+
+    let respuesta = await fetch("assets/php/comentarios.php", { method: 'POST', body: datos });
+    let json = await respuesta.json();
+
+    moment.locale("es");
+    moment().format("L");
+
+    json.map(comen => {
+        var fecha3 = moment(comen.fecha, 'YYYY-MM-DD hh:mm:ss').fromNow();
+        
+        listaComentarios += `
+        <li class="list-group-item">
+            <p>
+                <img src="assets/${comen.foto}" width="45px" height="45px" style="border-radius:100%;">
+                <b class="mx-2">${comen.name}</b> <small>${fecha3}</small>
+            </p>
+            <p>${comen.comentario}</p>
+        </li>
+
+        `;
+        count++;
+    });
+    
+    listaComentarios += `</ul>`;
+    
+    if (count > 0) {
+        document.getElementById(`collapse${ido}`).innerHTML = listaComentarios; 
+    } else {
+        document.getElementById(`collapse${ido}`).innerHTML = "<h5>NO HAY COMENTARIOS</h5>";
+    }
+};
 
