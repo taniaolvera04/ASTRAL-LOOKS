@@ -164,7 +164,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                   WHEN 12 THEN 'Diciembre'
                               END AS nombre_mes 
                           FROM citas c 
-                          JOIN cortes co ON c.corte_id = co.id_c 
+                          JOIN cortes co ON c.asunto = co.corte 
                           WHERE c.finalizado = 1 
                           GROUP BY mes, co.corte
                           ORDER BY mes, cantidad DESC";
