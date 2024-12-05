@@ -240,7 +240,7 @@ const verCom = async (ido) => {
         listaComentarios += `
         <li class="list-group-item">
             <p>
-                <img src="assets/${comen.foto}" width="45px" height="45px" style="border-radius:100%;">
+                <img src="${comen.foto}" width="45px" height="45px" style="border-radius:100%;">
                 <b class="mx-2">${comen.name}</b> <small>${fecha3}</small>
             </p>
             <p>${comen.comentario}</p>

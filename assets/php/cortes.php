@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $fileName = $_FILES['img']['name'] ?? '';
             $fileTmpName = $_FILES['img']['tmp_name'] ?? '';
-            $uploadDirectory = '../assets/imgCortes/';
+            $uploadDirectory = '../imgCortes/';
 
             if (empty($a) || $b <= 0 || empty($fileName)) {
                 $valido['mensaje'] = "Todos los campos son obligatorios.";
