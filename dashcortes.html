@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <title>DASHBOARD CORTES</title>
 </head>
-<body class="bg-light text-center">
+<body class="bg-light text-center" onload="masPedidos()">
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container-fluid">
@@ -42,12 +42,29 @@
         </div>
     </nav><br>
 
+    <div class="container-fluid w-75 m-auto">
+        <div class="card text-center mt-4">
+          <div class="card-header">
+              <img src="assets/imgUsers/67510c5bb806e_draculaura.jpg" style="border-radius: 50%;"  height="40px">
+          </div>
   
+          <div class="card-body">
+            <h4>CORTES MÁS PEDIDOS</h4>
+              <div id="action">
+                  <img src="assets/imgUsers/67510c5bb806e_draculaura.jpg"  id="eslogan" style="max-width: 100%; width:500px">
+              </div>
+          </div>
+  
+          <div class="card-footer text-body-secondary">
+              © 2024 ASTRO LOOKS 
+          </div>
+      </div>
+  </div>
 
 
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="assets/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/sweetalert2.all.min.js"></script>
-    <script src="assets/js/login.js"></script>
+    <script src="assets/js/dashcortes.js"></script>
 </body>
 </html>

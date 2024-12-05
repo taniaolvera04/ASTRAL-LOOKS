@@ -143,6 +143,79 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo json_encode($valido);
             break;
 
+
+            case "masPedidos":
+                $query = "SELECT 
+                              DATE_FORMAT(c.fecha, '%Y-%m') AS mes, 
+                              co.corte, 
+                              COUNT(*) AS cantidad, 
+                              CASE MONTH(c.fecha)
+                                  WHEN 1 THEN 'Enero'
+                                  WHEN 2 THEN 'Febrero'
+                                  WHEN 3 THEN 'Marzo'
+                                  WHEN 4 THEN 'Abril'
+                                  WHEN 5 THEN 'Mayo'
+                                  WHEN 6 THEN 'Junio'
+                                  WHEN 7 THEN 'Julio'
+                                  WHEN 8 THEN 'Agosto'
+                                  WHEN 9 THEN 'Septiembre'
+                                  WHEN 10 THEN 'Octubre'
+                                  WHEN 11 THEN 'Noviembre'
+                                  WHEN 12 THEN 'Diciembre'
+                              END AS nombre_mes 
+                          FROM citas c 
+                          JOIN cortes co ON c.corte_id = co.id_c 
+                          WHERE c.finalizado = 1 
+                          GROUP BY mes, co.corte
+                          ORDER BY mes, cantidad DESC";
+                
+                $result = $cx->query($query);
+                
+                $data = [];
+                $prevMonth = null;
+                $maxCount = 0;
+            
+                while ($row = $result->fetch_assoc()) {
+                    $currentMonth = $row['mes'];
+            
+                    // Verificar si estamos cambiando de mes o si es el primer mes
+                    if ($currentMonth != $prevMonth) {
+                        // Guardar el corte más pedido del mes anterior (si existe)
+                        if ($prevMonth !== null) {
+                            $data[] = $maxData;  // Añadir el corte más pedido de mes anterior
+                        }
+                        
+                        // Actualizar para el nuevo mes
+                        $prevMonth = $currentMonth;
+                        $maxCount = $row['cantidad'];
+                        $maxData = [
+                            'mes' => $row['mes'],
+                            'corte' => $row['corte'],
+                            'cantidad' => $row['cantidad']
+                        ];
+                    } else {
+                        // Si el corte actual tiene más cantidad que el anterior, lo actualizamos
+                        if ($row['cantidad'] > $maxCount) {
+                            $maxCount = $row['cantidad'];
+                            $maxData = [
+                                'mes' => $row['mes'],
+                                'corte' => $row['corte'],
+                                'cantidad' => $row['cantidad']
+                            ];
+                        }
+                    }
+                }
+            
+                // Añadir el último mes procesado
+                if ($prevMonth !== null) {
+                    $data[] = $maxData;
+                }
+            
+                echo json_encode(['data' => $data]);
+                break;
+            
+            
+
         default:
             echo json_encode(["error" => "Acción no válida"]);
             break;
