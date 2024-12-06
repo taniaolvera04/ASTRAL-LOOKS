@@ -96,6 +96,30 @@ function seleccionarpeinado(peinado, id, precio) {
 
 
 
+async function enviarSMS(numero, mensaje) {
+  try {
+    console.log(`Enviando SMS a ${numero}: ${mensaje}`);
+    console.log("Datos para envío de SMS:", { numero, mensaje });
+
+    const response = await fetch("assets/php/citas.php?action=enviarSMS", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ numero, mensaje }),
+    });
+
+    const result = await response.json();
+    if (result.success) {
+      console.log("SMS enviado exitosamente:", result);
+    } else {
+      console.error("Error al enviar SMS:", result.error);
+    }
+  } catch (error) {
+    console.error("Error en la solicitud de SMS:", error);
+  }
+}
+
 document.getElementById("form-agendar-cita").addEventListener("submit", async (e) => {
   e.preventDefault();
   const id = document.getElementById("asunto").value;
@@ -119,10 +143,16 @@ document.getElementById("form-agendar-cita").addEventListener("submit", async (e
   if (result.success) {
     Swal.fire("Éxito", "Cita agendada con éxito", "success");
     cargarCitasPendientes();
-  } else {
-    Swal.fire("Error", "No se pudo agendar la cita", "error");
-  }
+
+   // Generar y enviar el mensaje SMS personalizado
+   const numero = result.numero; // Número obtenido de la respuesta
+   const mensaje = `HOLA!!! ${result.usuario}, Tu cita para ${result.nombre} ha sido agendada el ${fecha} a las ${new Date(fecha).toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' })}. Te esperamos en ASTRAL-LOOKS. ¡Gracias!`;
+   enviarSMS(numero, mensaje);
+ } else {
+   Swal.fire("Error", "No se pudo agendar la cita", "error");
+ }
 });
+
 
 
 

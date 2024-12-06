@@ -46,9 +46,70 @@ if ($action === 'agendarCita') {
     $stmt->bind_param("issdsi", $userId, $nombre, $fecha, $precio, $tipo, $id);
     $stmt->execute();
     
-    echo json_encode(['success' => true]);
+   // Obtener número de teléfono del usuario
+    $stmtUser = $cx->prepare("SELECT name, numerotel FROM users WHERE id = ?");
+    $stmtUser->bind_param("i", $userId);
+    $stmtUser->execute();
+    $usuario = $stmtUser->get_result()->fetch_assoc();
+
+    echo json_encode([
+        'success' => true,
+        'nombre' => $nombre,
+        'numero' => $usuario['numerotel'],
+        'usuario' => $usuario['name'], // Enviamos el nombre del usuario
+    ]);
     exit;
 }
+
+// Acción para enviar SMS usando Infobip
+if ($action === 'enviarSMS') {
+    $datos = json_decode(file_get_contents("php://input"), true);
+    $numero = $datos['numero'] ?? null;
+    $mensaje = $datos['mensaje'] ?? null;
+
+    if (!$numero || !$mensaje) {
+        echo json_encode(['success' => false, 'error' => 'Número o mensaje no proporcionado']);
+        exit;
+    }
+
+    $url = "https://api.infobip.com/sms/2/text/single";
+    $headers = [
+        "Authorization: App cdcf2da632568dbbe125da0ac3e24552-de1dc3f6-78af-4a96-8e85-3891dfe30b75", // API Key
+        "Content-Type: application/json",
+    ];
+    $body = json_encode([
+        "from" => "444000", // Remitente configurado
+        "to" => $numero,
+        "text" => $mensaje,
+    ]);
+
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $curlError = curl_error($ch); // Captura errores de cURL
+
+    if ($httpCode === 200) {
+        echo json_encode(['success' => true, 'message' => 'SMS enviado']);
+    } else {
+        echo json_encode([
+            'success' => false,
+            'error' => 'Error al enviar SMS',
+            'httpCode' => $httpCode,
+            'response' => $response,
+            'curlError' => $curlError
+        ]);
+    }
+
+    curl_close($ch);
+    exit;
+}
+
+
 
 
 // Acción para obtener el historial de citas
