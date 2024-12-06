@@ -141,7 +141,7 @@ document.getElementById("form-agendar-cita").addEventListener("submit", async (e
   const result = await response.json();
 
   if (result.success) {
-    Swal.fire("Éxito", "Cita agendada con éxito", "success");
+    Swal.fire("Éxito", `Cita agendada con éxito Teléfono : ${result.numero}`, "success");
     cargarCitasPendientes();
 
    // Generar y enviar el mensaje SMS personalizado
@@ -196,7 +196,7 @@ document.getElementById("form-agendar-cita").addEventListener("submit", async (e
     if (result.success) {
       Swal.fire(
         "Éxito",
-        `Cita marcada como atendida. Teléfono del usuario: ${result.numero}`,
+        `Cita marcada como atendida.`,
         "success"
       ).then(() => {
         cargarCitasPendientes();

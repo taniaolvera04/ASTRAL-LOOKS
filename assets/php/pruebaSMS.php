@@ -1,5 +1,5 @@
 <?php
-$numero = "525610814952"; // Número en formato E.164
+$numero = "525521726432"; // Número en formato E.164
 $mensaje = "Este es un mensaje de prueba.";
 $apiKey = "cdcf2da632568dbbe125da0ac3e24552-de1dc3f6-78af-4a96-8e85-3891dfe30b75"; // Clave de Infobip
 
