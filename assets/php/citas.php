@@ -51,7 +51,31 @@ if ($action === 'agendarCita') {
 }
 
 
+// Acción para obtener el historial de citas
+if ($action === 'obtenerHistorialAdmin') {
+    $stmt = $cx->prepare("
+        SELECT c.fecha, c.asunto, c.costo, c.tipo , c.tipo,u.name
+        FROM citas c
+        INNER JOIN users u ON c.user_id = u.id
+        WHERE c.finalizado = 1 
+    ");
+    $stmt->execute();
+    echo json_encode($stmt->get_result()->fetch_all(MYSQLI_ASSOC));
+    exit;
+}
 
+// Acción para obtener citas pendientes
+if ($action === 'obtenerPendientesAdmin') {
+    $stmt = $cx->prepare("
+        SELECT c.id, c.asunto, c.fecha, c.costo, c.tipo,u.name, u.foto
+        FROM citas c
+        INNER JOIN users u ON c.user_id = u.id
+        WHERE c.finalizado = 0
+    ");
+    $stmt->execute();
+    echo json_encode($stmt->get_result()->fetch_all(MYSQLI_ASSOC));
+    exit;
+}
 
 
 // Acción para obtener citas pendientes

@@ -144,7 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             break;
 
 
-            case "masPedidos":
+            case "CortesMasPedidos":
                 $query = "SELECT 
                               DATE_FORMAT(c.fecha, '%Y-%m') AS mes, 
                               co.corte, 

@@ -64,7 +64,7 @@ if ($action == 'actualizar') {
     }
 
     // Depuración de los datos recibidos
-    file_put_contents('debug_log.txt', print_r($_POST, true), FILE_APPEND);
+    //file_put_contents('debug_log.txt', print_r($_POST, true), FILE_APPEND);
 
     if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
         // Mover la nueva imagen y actualizar en la base de datos
@@ -109,4 +109,59 @@ if ($action == 'eliminar') {
         echo json_encode(['success' => false, 'mensaje' => 'Error al eliminar: ' . $cx->error]);
     }
 }
+
+if ($action == 'PeinadosMasPedidos') {
+    $query = "SELECT 
+                DATE_FORMAT(c.fecha, '%Y-%m') AS mes, 
+                pe.nombre AS peinado, 
+                COUNT(*) AS cantidad, 
+                CASE MONTH(c.fecha)
+                    WHEN 1 THEN 'Enero'
+                    WHEN 2 THEN 'Febrero'
+                    WHEN 3 THEN 'Marzo'
+                    WHEN 4 THEN 'Abril'
+                    WHEN 5 THEN 'Mayo'
+                    WHEN 6 THEN 'Junio'
+                    WHEN 7 THEN 'Julio'
+                    WHEN 8 THEN 'Agosto'
+                    WHEN 9 THEN 'Septiembre'
+                    WHEN 10 THEN 'Octubre'
+                    WHEN 11 THEN 'Noviembre'
+                    WHEN 12 THEN 'Diciembre'
+                END AS nombre_mes 
+            FROM citas c 
+            JOIN peinados pe ON c.asunto = pe.nombre 
+            WHERE c.finalizado = 1 
+            GROUP BY mes, peinado 
+            ORDER BY mes, cantidad DESC";
+
+    $result = $cx->query($query);
+
+    $data = [];
+    $prevMonth = null;
+    $maxData = null;
+
+    while ($row = $result->fetch_assoc()) {
+        $currentMonth = $row['mes'];
+
+        if ($currentMonth != $prevMonth) {
+            if ($maxData !== null) {
+                $data[] = $maxData;
+            }
+
+            $prevMonth = $currentMonth;
+            $maxData = $row;
+        } elseif ($row['cantidad'] > $maxData['cantidad']) {
+            $maxData = $row;
+        }
+    }
+
+    if ($maxData !== null) {
+        $data[] = $maxData;
+    }
+
+    echo json_encode(['data' => $data]);
+}
+
+
 ?>

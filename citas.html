@@ -11,10 +11,10 @@
   <link rel="stylesheet" href="assets/css/citas.css">
 </head>
 
-<body class="bg-light text-center">
+<body class="bg-light text-center" onload="cargarCitasPendientes();cargarHistorialCitas();">
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <div class="container-fluid">
-    <span class="navbar-brand h1">INICIO</span>
+    <span class="navbar-brand h1">ASTRAL-LOOKS</span>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -39,31 +39,53 @@
           <a class="nav-link" href="infoA.html">CUENTA</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="dashcortes.html">DASHBOARD CORTES</a>
+          <a class="nav-link" href="dashboard.html">ESTADISTICAS</a>
         </li>
       </ul>
     </div>
   </div>
 </nav>
 
+  <!-- Modal Historial -->
+  <button type="button" class="btn btn-secondary mt-5 m-auto" data-bs-toggle="modal" data-bs-target="#modalHistorial">
+    Ver Historial de Citas
+  </button>
+
 <div class="container mt-5">
   <h1 class="mb-4">CITAS POR CUMPLIR</h1>
 
-  <div class="card shadow-lg mx-auto" style="width: 22rem;">
-    <img src="assets/imgUsers/icon.png" class="card-img-top" alt="Usuario">
-    <div class="card-body text-start">
-      <h5 class="card-title text-primary">Nombre del usuario</h5>
-      <p class="card-text"><strong>Cita:</strong> 16/Noviembre/2024</p>
-      <p class="card-text"><strong>Asunto:</strong> Corte de cabello Masculino</p>
-      <div class="d-flex justify-content-between">
-        <button class="btn btn-success btn-sm">Terminado</button>
-        <button class="btn btn-danger btn-sm">Eliminar cita</button>
+<div id="citasP"></div>
+
+<div class="modal fade" id="modalHistorial" tabindex="-1" aria-labelledby="modalHistorialLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalHistorialLabel">Historial de Citas</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Usuario</th>
+              <th>Tipo</th>
+              <th>Asunto</th>
+              <th>Fecha</th>
+              <th>Finalizado</th>
+              <th>Costo</th>
+              
+            </tr>
+          </thead>
+          <tbody id="tabla-historial"></tbody>
+        </table>
       </div>
     </div>
   </div>
 </div>
 
 <script src="assets/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/sweetalert2.all.min.js"></script>
+<script src="assets/js/citasA.js"></script>
 </body>
 
 </html>
