@@ -24,4 +24,10 @@ body {
     border-radius: 8px;
     font-size: 0.9rem;
   }
-  
+  .custom-header {
+    background-color: #f3c6d5 !important; 
+  }
+
+  .table th:hover {
+    background-color: #f3c6d5 !important;
+  }
