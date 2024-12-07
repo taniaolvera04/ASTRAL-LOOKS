@@ -6,11 +6,11 @@
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <title>CUENTA</title>
 </head>
-<body class="bg-light text-center">
+<body class="text-center" style="background-color: #fff4f8;;">
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
+    <nav class="navbar navbar-expand-lg navbar-dark shadow" style="background:#e98dad;">
         <div class="container-fluid">
-            <span class="navbar-brand h1">ASTRAL-LOOKS</span>
+            <span class="navbar-brand h1">ASTRAL LOOKS</span>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -43,15 +43,20 @@
       </nav><br>
 
     <div class="container mt-5">
-        <div id="user-info" class="card mx-auto" style="width: 22rem;">
+        <div id="user-info" class="card mx-auto" style="width: 22rem;border: 3px solid #fee3ec;">
             <img id="user-photo" class="card-img-top" alt="Foto de perfil" src="assets/imgUsers/icon.png">
             <div class="card-body">
                 <h5 id="user-name" class="card-title text-primary"></h5>
                 <p id="user-email" class="card-text"><strong>Email:</strong></p>
-                <p><strong>NUMERO TELEFONICO</strong> <p id="user-tel"></p></p>
+                <p><strong>NÚMERO TELEFÓNICO</strong> <p id="user-tel"></p></p>
 
-                <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#updateProfileModal">Actualizar Perfil</button>
-                <button class="btn btn-danger mt-3" onclick="cerrarSesion()">Cerrar Sesión</button>
+                <button class="btn btn-info mt-3" data-bs-toggle="modal" data-bs-target="#updateProfileModal">EDITAR PERFIL <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                  <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                  <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                </svg></button>
+                <button class="btn btn-danger mt-3" onclick="cerrarSesion()">CERRAR SESIÓN <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-door-open-fill" viewBox="0 0 16 16">
+                  <path d="M1.5 15a.5.5 0 0 0 0 1h13a.5.5 0 0 0 0-1H13V2.5A1.5 1.5 0 0 0 11.5 1H11V.5a.5.5 0 0 0-.57-.495l-7 1A.5.5 0 0 0 3 1.5V15zM11 2h.5a.5.5 0 0 1 .5.5V15h-1zm-2.5 8c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1"/>
+                </svg></button>
             </div>
         </div>
     </div>
@@ -60,24 +65,25 @@
 <div class="modal fade" id="updateProfileModal" tabindex="-1" aria-labelledby="updateProfileModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="updateProfileModalLabel">Actualizar Perfil</h5>
+            <div class="modal-header"  style="background: #ffbbe0;">
+                <h5 class="modal-title fs-5 w-100 m-auto text-white" id="updateProfileModalLabel">ACTUALIZAR PERFIL</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="update-profile-form" onsubmit="event.preventDefault();">
-                    <label for="update-name" class="form-label">Nombre:</label>
-                    <input type="text" id="update-name" class="form-control mb-3" placeholder="Nombre" required>
+                    <label for="update-name" class="form-label"><b>NOMBRE</b></label>
+                    <input type="text" id="update-name" class="form-control mb-3 text-center" placeholder="Nombre" required>
 
-                    <label for="update-tel" class="form-label">Número Telefónico:</label>
-                    <input type="tel" id="update-tel" class="form-control mb-3" placeholder="Teléfono" required>
+                    <label for="update-tel" class="form-label"><b>NÚMERO TELEFÓNICO</b>
+                    </label>
+                    <input type="tel" id="update-tel" class="form-control mb-3 text-center" placeholder="Teléfono" required>
 
-                    <label for="update-photo" class="form-label">Foto de perfil:</label>
+                    <label for="update-photo" class="form-label"><b>FOTO DE PERFIL</b></label>
                     <input type="file" id="update-photo" class="form-control mb-3" accept="image/*" onchange="previewPhoto()">
 
                     <img id="photo-preview" class="img-thumbnail mb-3 m-auto" alt="Vista previa de foto" style="display: none; max-height: 200px;">
 
-                    <button onclick="actualizarPerfil()" class="btn btn-success w-100">Guardar Cambios</button>
+                    <button onclick="actualizarPerfil()" class="btn btn-success w-100">GUARDAR CAMBIOS</button>
                 </form>
             </div>
         </div>
