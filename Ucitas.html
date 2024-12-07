@@ -9,10 +9,10 @@
   <link rel="stylesheet" href="assets/css/Ucitas.css">
 </head>
 
-<body class="bg-light text-center">
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<body class="text-center" style="background-color: #fff4f8;">
+  <nav class="navbar navbar-expand-lg navbar-dark shadow" style="background:#e98dad;">
     <div class="container-fluid">
-        <span class="navbar-brand h1">ASTRAL-LOOKS</span>
+        <span class="navbar-brand h1">ASTRAL LOOKS</span>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -39,38 +39,49 @@
 </nav>
 
 <div class="container mt-5">
-    <h1 class="mb-4">AGENDAR CITA</h1>
+    <h1 class="mb-4" style="color:#e98dad;">AGENDAR CITA</h1>
     <form id="form-agendar-cita" class="mb-5">
       <div class="mb-3">
-        <label for="asunto" class="form-label">Asunto</label>
+        <label for="asunto" class="form-label"><b>ASUNTO</b></label>
         <!-- Modificación en el formulario -->
          <input type="hidden" id="tipo" name="tipo">
         <input type="hidden" id="asunto" name="asunto">
       </div>
       <div class="mb-3">
-        <label for="corteSeleccionado" class="form-label">Corte/Peinado Seleccionado</label>
-        <div id="corteSeleccionado" class="border p-2">Ningún corte seleccionado</div>
-        <button type="button" class="btn btn-secondary mt-2" data-bs-toggle="modal" data-bs-target="#modalCortes">
-          Seleccionar Corte
+        <label for="corteSeleccionado" class="form-label"><b>CORTE/PEINADO SELECCIONADO</b></label>
+        <div id="corteSeleccionado" class="border p-2" style="background-color: #ffffff;">Ningún corte seleccionado</div>
+        <button type="button" class="btn btn-outline-info mt-2" data-bs-toggle="modal" data-bs-target="#modalCortes">
+          SELECCIONAR CORTE
         </button>
-        <button type="button" class="btn btn-secondary mt-2" data-bs-toggle="modal" data-bs-target="#modalpeinados">
-          Seleccionar Peinados
+        <button type="button" class="btn btn-outline-warning mt-2" data-bs-toggle="modal" data-bs-target="#modalpeinados">
+          SELECCIONAR PEINADO
         </button>
       </div>
       <div class="mb-3">
-        <label for="fecha" class="form-label">Fecha</label>
-        <input type="datetime-local" class="form-control" id="fecha" required>
+        <label for="fecha" class="form-label"><b>FECHA</b></label>
+        <input type="datetime-local" class="form-control text-center" id="fecha" required>
       </div>
-      <button type="submit" class="btn btn-primary">Agendar</button>
+      <button type="submit" class="btn btn-success">AGENDAR <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-check" viewBox="0 0 16 16">
+        <path d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
+        <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
+      </svg></button>
     </form>
+
+
   
-    <h2 class="mb-4">Citas Pendientes</h2>
-    <div id="citas-pendientes" class="d-flex flex-column gap-3"></div>
+    <h2 class="mb-4">CITAS PENDIENTES</h2>
+    <div id="citas-pendientes" class="d-flex flex-column gap-3"  style="border: 3px solid #fee3ec; border-radius: 10px;"></div>
   </div>
   
+
+
   <!-- Modal Historial -->
-  <button type="button" class="btn btn-secondary mt-5" data-bs-toggle="modal" data-bs-target="#modalHistorial">
-    Ver Historial de Citas
+  <button type="button" class="btn btn-outline-info mt-5" data-bs-toggle="modal" data-bs-target="#modalHistorial">
+    VER HISTORIAL DE CITAS <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock-history" viewBox="0 0 16 16">
+      <path d="M8.515 1.019A7 7 0 0 0 8 1V0a8 8 0 0 1 .589.022zm2.004.45a7 7 0 0 0-.985-.299l.219-.976q.576.129 1.126.342zm1.37.71a7 7 0 0 0-.439-.27l.493-.87a8 8 0 0 1 .979.654l-.615.789a7 7 0 0 0-.418-.302zm1.834 1.79a7 7 0 0 0-.653-.796l.724-.69q.406.429.747.91zm.744 1.352a7 7 0 0 0-.214-.468l.893-.45a8 8 0 0 1 .45 1.088l-.95.313a7 7 0 0 0-.179-.483m.53 2.507a7 7 0 0 0-.1-1.025l.985-.17q.1.58.116 1.17zm-.131 1.538q.05-.254.081-.51l.993.123a8 8 0 0 1-.23 1.155l-.964-.267q.069-.247.12-.501m-.952 2.379q.276-.436.486-.908l.914.405q-.24.54-.555 1.038zm-.964 1.205q.183-.183.35-.378l.758.653a8 8 0 0 1-.401.432z"/>
+      <path d="M8 1a7 7 0 1 0 4.95 11.95l.707.707A8.001 8.001 0 1 1 8 0z"/>
+      <path d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5"/>
+    </svg>
   </button>
 
   <div class="modal fade" id="modalHistorial" tabindex="-1" aria-labelledby="modalHistorialLabel" aria-hidden="true">
