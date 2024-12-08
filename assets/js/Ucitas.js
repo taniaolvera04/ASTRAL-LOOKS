@@ -20,7 +20,7 @@ async function cargarCortes() {
       listaCortes.innerHTML = "";
       data.forEach((corte) => {
         const item = document.createElement("div");
-        item.className = "d-flex align-items-center mb-3";
+        item.className = "d-flex align-items-center mb-3 border border-primary text-center m-auto justify-content-center w-75";
         item.innerHTML = `
           <img src="assets/imgCortes/${corte.imagen}" alt="${corte.corte}" class="img-thumbnail me-3" width="60">
           <div>
@@ -33,6 +33,7 @@ async function cargarCortes() {
 </svg>
             </button>
           </div>
+         
         `;
         listaCortes.appendChild(item);
       });
@@ -58,7 +59,7 @@ async function cargarpeinados() {
       listapeinados.innerHTML = "";
       data.forEach((peinado) => {
         const item = document.createElement("div");
-        item.className = "d-flex align-items-center mb-3";
+        item.className = "d-flex align-items-center mb-3 border border-primary text-center m-auto justify-content-center w-100";
         item.innerHTML = `
         
           <img src="assets/imgPeinados/${peinado.imagen}" alt="${peinado.peinado}" class="img-thumbnail me-3" width="60">
