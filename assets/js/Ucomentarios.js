@@ -58,9 +58,9 @@ const cargarOpinions=async()=>{
     var fecha3=moment(opi.fecha,'YYYY-MM-DD hh:mm:ss').fromNow();
     
     divO+=`
-    <div class="card w-50 m-auto mt-3">
+    <div class="card w-50 m-auto mt-3" style="border: 3px solid #beaae6;">
     
-    <div class="card-header">
+    <div class="card-header"  style="background-color: #e7dcfd;">
             <div class="col m-2">
             <img src="${opi.foto}" width="50px" height="50px" style="border-radius: 100%;">
             <b class="mx-1">${opi.name}</b>
@@ -73,7 +73,7 @@ const cargarOpinions=async()=>{
             </div>
     
     
-    <div class="card-footer text-center"> 
+    <div class="card-footer text-center"  style="background-color: #e7dcfd;"> 
        <button class="btn btn-info mx-2" onclick="mostrarOpi(${opi.id_o})" data-bs-toggle="modal" data-bs-target="#editOpinion">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-pencil-square" viewBox="0 0 16 16">
   <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
@@ -90,7 +90,7 @@ const cargarOpinions=async()=>{
     </div>
 
 
-     <div class="accordion w-50 m-auto" id="accordionExample">
+     <div class="accordion w-50 m-auto" id="accordionExample" style="border: 3px solid #beaae6;border-radius:10px;">
         <div class="accordion-item">
             <h2 class="accordion-header">
                 <button onclick="verCom(${opi.id_o})" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${opi.id_o}" aria-expanded="true" aria-controls="collapseOne">

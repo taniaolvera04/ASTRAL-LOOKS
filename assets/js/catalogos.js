@@ -14,7 +14,7 @@ json.data.forEach(item => {
         : `assets/imgCortes/${item[3]}`;
 
     tablaHTML += `
-        <div class="card" style="width: 200px; margin: 10px;">
+        <div class="card" style="width: 200px; margin: 10px; 3px solid #fee3ec;">
             <img src="${imagenPath}" height="200px" class="card-img-top" alt="Imagen del corte">
             <div class="card-body">
                 <h5 class="card-title">${item[1]}</h5>
@@ -44,7 +44,7 @@ const peinados = async () => {
             : `assets/imgPeinados/${item.imagen}`;
 
         tablaHTML += `
-        <div class="card" style="width: 200px; margin: 10px;">
+        <div class="card" style="width: 200px; margin: 10px; border:4px solid #fee3ec;">
             <img src="${imagenPath}" height="200px" class="card-img-top" alt="${item.nombre}">
             <div class="card-body">
                 <h5 class="card-title">${item.nombre}</h5>

@@ -38,3 +38,18 @@ body {
     font-size: 0.9rem;
   }
   
+  .btn-primary {
+    background: rgb(240, 166, 220);
+    border: 2px solid rgb(216, 137, 195);
+  }
+  
+  .btn-primary:hover {
+    background: rgb(210, 120, 180); /* Tono más oscuro al pasar el mouse */
+    border: 2px solid rgb(190, 105, 170); /* Borde más oscuro al pasar el mouse */
+  }
+  
+  .btn-primary:active {
+    background: rgb(180, 90, 150); /* Tono más oscuro al hacer clic */
+    border: 2px solid rgb(160, 75, 135); /* Borde más oscuro al hacer clic */
+  }
+  
