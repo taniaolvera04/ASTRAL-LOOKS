@@ -115,10 +115,11 @@ if ($action === 'enviarSMS') {
 // Acción para obtener el historial de citas
 if ($action === 'obtenerHistorialAdmin') {
     $stmt = $cx->prepare("
-        SELECT c.fecha, c.asunto, c.costo, c.tipo , c.tipo,u.name
+        SELECT c.fecha, c.asunto, c.costo, c.tipo, c.tipo, u.name
         FROM citas c
         INNER JOIN users u ON c.user_id = u.id
-        WHERE c.finalizado = 1 
+        WHERE c.finalizado = 1
+        ORDER BY c.fecha DESC
     ");
     $stmt->execute();
     echo json_encode($stmt->get_result()->fetch_all(MYSQLI_ASSOC));
@@ -132,6 +133,7 @@ if ($action === 'obtenerPendientesAdmin') {
         FROM citas c
         INNER JOIN users u ON c.user_id = u.id
         WHERE c.finalizado = 0
+        ORDER BY c.fecha ASC
     ");
     $stmt->execute();
     echo json_encode($stmt->get_result()->fetch_all(MYSQLI_ASSOC));
