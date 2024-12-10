@@ -80,3 +80,24 @@ body {
 .card .btn {
   width: 45%; 
 }
+
+.cupón {
+  border: 2px dashed #e98dad;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 8px;
+  background: #ffeef5;
+  text-align: center;
+}
+
+.cupón p {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #d63384;
+}
+
+.cupón .fecha {
+  font-size: 0.8em;
+  color: #6c757d;
+}
+

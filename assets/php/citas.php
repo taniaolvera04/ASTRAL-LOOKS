@@ -9,7 +9,7 @@ if (!isset($_SESSION['id'])) {
 }
 $userId = $_SESSION['id'];
 
-$action = $_GET['action'] ?? $_POST['action'] ?? '';
+$action = $_GET['action'] ?? $_POST['action'] ?? null;
 
 $response = ['success' => false];
 
@@ -109,9 +109,6 @@ if ($action === 'enviarSMS') {
     exit;
 }
 
-
-
-
 // Acción para obtener el historial de citas
 if ($action === 'obtenerHistorialAdmin') {
     $stmt = $cx->prepare("
@@ -129,7 +126,7 @@ if ($action === 'obtenerHistorialAdmin') {
 // Acción para obtener citas pendientes
 if ($action === 'obtenerPendientesAdmin') {
     $stmt = $cx->prepare("
-        SELECT c.id, c.asunto, c.fecha, c.costo, c.tipo,u.name, u.foto
+        SELECT c.id, c.asunto, c.fecha, c.costo, c.tipo, u.id AS user_id, u.name, u.foto
         FROM citas c
         INNER JOIN users u ON c.user_id = u.id
         WHERE c.finalizado = 0
@@ -156,7 +153,7 @@ if ($action === 'obtenerPendientes') {
 }
 
 
-// Acción para marcar como atendido con telefono
+// Acción para marcar como atendido con validaciones
 if ($action === 'marcarAtendido') {
     $id = $_GET['id'] ?? null;
 
@@ -165,50 +162,59 @@ if ($action === 'marcarAtendido') {
         exit;
     }
 
-    // Consulta para obtener el teléfono del usuario asociado a la cita
-    $stmtInfo = $cx->prepare("
-        SELECT u.numerotel 
-        FROM citas c 
-        INNER JOIN users u ON c.user_id = u.id 
-        WHERE c.id = ?
-    ");
-    $stmtInfo->bind_param("i", $id);
-    $stmtInfo->execute();
-    $resultInfo = $stmtInfo->get_result()->fetch_assoc();
+    // Verificar que el ID de la cita exista
+    $stmtVerificar = $cx->prepare("SELECT id FROM citas WHERE id = ?");
+    $stmtVerificar->bind_param("i", $id);
+    $stmtVerificar->execute();
+    $citaExiste = $stmtVerificar->get_result()->num_rows > 0;
 
-    if (!$resultInfo) {
-        echo json_encode(['success' => false, 'error' => 'No se encontró el usuario asociado']);
+    if (!$citaExiste) {
+        echo json_encode(['success' => false, 'error' => 'Cita no encontrada']);
         exit;
     }
-
-    $numerotel = $resultInfo['numerotel'];
 
     // Marcar la cita como atendida
     $stmt = $cx->prepare("UPDATE citas SET finalizado = 1 WHERE id = ?");
     $stmt->bind_param("i", $id);
 
     if ($stmt->execute()) {
-        $response['success'] = true;
-        $response['message'] = 'Cita marcada como atendida';
-        $response['numero'] = $numerotel; // Incluir el teléfono en la respuesta
-    } else {
-        $response['success'] = false;
-        $response['error'] = 'Error al actualizar la cita';
-    }
+        // Obtener el número de teléfono del usuario asociado
+        $stmtInfo = $cx->prepare("SELECT u.numerotel FROM citas c INNER JOIN users u ON c.user_id = u.id WHERE c.id = ?");
+        $stmtInfo->bind_param("i", $id);
+        $stmtInfo->execute();
+        $info = $stmtInfo->get_result()->fetch_assoc();
 
-    echo json_encode($response);
+        echo json_encode([
+            'success' => true,
+            'message' => 'Cita marcada como atendida',
+            'numero' => $info['numerotel'] ?? null,
+        ]);
+    } else {
+        echo json_encode(['success' => false, 'error' => 'Error al actualizar la cita']);
+    }
     exit;
 }
 
-
-
-// Acción para eliminar cita
+// Acción para eliminar cita con validaciones
 if ($action === 'eliminarCita') {
-    $id = $_GET['id'];
+    $id = $_GET['id'] ?? null;
+
+    if (!$id) {
+        echo json_encode(['success' => false, 'error' => 'ID no proporcionado']);
+        exit;
+    }
+
     $stmt = $cx->prepare("DELETE FROM citas WHERE id = ?");
     $stmt->bind_param("i", $id);
-    $response['success'] = $stmt->execute();
+
+    if ($stmt->execute()) {
+        echo json_encode(['success' => true, 'message' => 'Cita eliminada correctamente']);
+    } else {
+        echo json_encode(['success' => false, 'error' => 'Error al eliminar la cita']);
+    }
+    exit;
 }
+
 
 // Acción para obtener el historial de citas
 if ($action === 'obtenerHistorial') {
@@ -256,6 +262,53 @@ if ($action === 'obtenerpeinados') {
     }
     exit;
 }
+
+// Acción para obtener los cupones de un usuario
+if ($action === 'obtenerCupones') {
+    $userId = $_GET['user_id'] ?? null;
+
+    if (!$userId) {
+        echo json_encode(['success' => false, 'error' => 'ID de usuario no proporcionado']);
+        exit;
+    }
+
+    $stmt = $cx->prepare("SELECT id, beneficio, fecha, canjeado FROM cupones WHERE usuario_id = ?");
+    $stmt->bind_param("i", $userId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    $cupones = $result->fetch_all(MYSQLI_ASSOC);
+    
+    echo json_encode(['success' => true, 'cupones' => $cupones]);
+    exit;
+}
+
+
+// Acción para canjear un cupón
+if ($action === 'canjearCupon') {
+    error_log(json_encode($_POST));  // Log para ver todo el contenido recibido
+
+    $datos = json_decode(file_get_contents("php://input"), true);
+    $cuponId = $datos['cuponId'] ?? null;
+    
+    if (!$cuponId) {
+        echo json_encode(['success' => false, 'error' => 'ID de cupón no proporcionado']);
+        exit;
+    }
+
+    // Marcar el cupón como canjeado
+    $stmt = $cx->prepare("UPDATE cupones SET canjeado = 1 WHERE id = ?");
+    $stmt->bind_param("i", $cuponId);
+
+    if ($stmt->execute()) {
+        echo json_encode(['success' => true, 'message' => 'Cupón canjeado']);
+    } else {
+        echo json_encode(['success' => false, 'error' => 'Error al canjear el cupón']);
+    }
+
+    exit;
+}
+
 
 // Si no se reconoce la acción, responder con error
 echo json_encode(['error' => 'Acción no válida']);

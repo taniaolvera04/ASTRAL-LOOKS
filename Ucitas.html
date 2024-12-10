@@ -18,25 +18,20 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link" href="info.html">CUENTA</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="Ucitas.html">CITA</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="Ucortes.html">CORTES</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="Upeinados.html">PEINADOS</a>
-              </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="Ucomentarios.html">OPINIONES</a>
-                </li>
+                <li class="nav-item"><a class="nav-link" href="info.html">CUENTA</a></li>
+                <li class="nav-item"><a class="nav-link active" aria-current="page" href="Ucitas.html">CITA</a></li>
+                <li class="nav-item"><a class="nav-link" href="Ucortes.html">CORTES</a></li>
+                <li class="nav-item"> <a class="nav-link" href="Upeinados.html">PEINADOS</a></li>
+                <li class="nav-item"><a class="nav-link" href="Ucomentarios.html">OPINIONES</a></li>
             </ul>
         </div>
     </div>
 </nav>
+<!-- Botón de notificación (en el archivo HTML, dentro del body) 
+ class="btn btn-info position-fixed top-0 left-0 m-3"-->
+<div class="notificacion" data-bs-toggle="modal" data-bs-target="#modalTareas">
+  <span>🎯 Tareas del mes</span>
+</div>
 
 <div class="container mt-5">
     <h1 class="mb-4" style="color:#e98dad;">AGENDAR CITA</h1>
@@ -67,14 +62,10 @@
       </svg></button>
     </form>
 
-
-  
     <h2 class="mb-4">CITAS PENDIENTES</h2>
     <div id="citas-pendientes" class="d-flex flex-column gap-3"  style="border: 3px solid #fee3ec; border-radius: 10px;"></div>
   </div>
   
-
-
   <!-- Modal Historial -->
   <button type="button" class="btn btn-outline-info mt-5" data-bs-toggle="modal" data-bs-target="#modalHistorial">
     VER HISTORIAL DE CITAS <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock-history" viewBox="0 0 16 16">
@@ -111,8 +102,6 @@
   </div>
 </div>
 
-
-
 <!-- Modal para selección de cortes -->
 <div class="modal fade" id="modalCortes" tabindex="-1" aria-labelledby="modalCortesLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -143,8 +132,29 @@
   </div>
 </div>
 
+<!-- Modal de tareas -->
+<div class="modal fade" id="modalTareas" tabindex="-1" aria-labelledby="modalTareasLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalTareasLabel">Tareas del mes</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <ul id="tareasLista">
+          <!-- Las tareas se agregarán aquí dinámicamente -->
+        </ul>
+        <div id="contenedorCupones" style="display: none; margin-top: 20px;">
+          <h6>Cupones ganados:</h6>
+          <!-- Aquí se mostrarán los cupones -->
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
 <script src="assets/js/bootstrap.bundle.min.js"></script>
 <script src="assets/js/sweetalert2.all.min.js"></script>
 <script src="assets/js/Ucitas.js"></script>
+<script src="assets/js/tareas.js"></script>
 </body>
 </html>
