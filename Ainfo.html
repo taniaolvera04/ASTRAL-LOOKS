@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <title>INFORMACION</title>
+  <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+
+  <style>
+    #mi_mapa{
+  height: 400px;
+  width: 600px;
+  display: block;
+  align-items: center;
+  margin: auto;
+}
+</style>
+
+</head>
+
+<body class="text-center"  style="background-color: #fff4f8;" onload="cargarInfo()">
+<nav class="navbar navbar-expand-lg navbar-dark shadow" style="background:#e98dad;">
+  <div class="container-fluid">
+    <span class="navbar-brand h1"><b>ASTRAL LOOKS</b></span>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link active" href="Ainfo.html">INFORMACION</a></li>
+        <li class="nav-item"><a class="nav-link" href="citas.html">INICIO</a></li>
+        <li class="nav-item"><a class="nav-link" href="cortes.html">CORTES</a></li>
+        <li class="nav-item"><a class="nav-link" href="productos.html">PRODUCTOS</a></li>
+        <li class="nav-item"><a class="nav-link" href="peinados.html">PEINADOS</a></li>
+        <li class="nav-item"><a class="nav-link" href="comentarios.html">OPINIONES</a></li>
+        <li class="nav-item"><a class="nav-link" href="infoA.html">CUENTA</a></li>
+        <li class="nav-item"><a class="nav-link" href="dashboard.html">ESTADÍSTICAS</a></li>
+    </ul>
+    </div>
+  </div>
+</nav>
+
+  <div id="m_info"></div>
+
+  
+  <div class="modal fade" id="editarInfo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header text-white" style="background: #d5bbff;">
+          <h5 class="modal-title fs-5 w-100 m-auto text-white" id="exampleModalLabel"><b>INFORMACIÓN</b></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="producto" class="form-label"><b>HORARIO DE ATENCIÓN</b></label>
+              <textarea name="" id="ehorario" class="form-control w-75 m-auto text-center"></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="cantidad" class="form-label"><b>TELEFONO</b></label>
+              <input type="text" id="etelefono" class="form-control w-75 m-auto text-center">
+            </div>
+            <div class="mb-3">
+              <label for="img" class="form-label"><b>DIRECCIÓN</b></label>
+              <input type="text" id="edireccion" class="form-control w-75 m-auto text-center">
+              <input type="hidden" id="id_i">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">CANCELAR <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+          </svg></button>
+          <button type="button" class="btn btn-success" onclick="actualizarInfo()" data-bs-dismiss="modal">Editar <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-folder-plus" viewBox="0 0 16 16">
+            <path d="m.5 3 .04.87a2 2 0 0 0-.342 1.311l.637 7A2 2 0 0 0 2.826 14H9v-1H2.826a1 1 0 0 1-.995-.91l-.637-7A1 1 0 0 1 2.19 4h11.62a1 1 0 0 1 .996 1.09L14.54 8h1.005l.256-2.819A2 2 0 0 0 13.81 3H9.828a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 6.172 1H2.5a2 2 0 0 0-2 2m5.672-1a1 1 0 0 1 .707.293L7.586 3H2.19q-.362.002-.683.12L1.5 2.98a1 1 0 0 1 1-.98z"/>
+            <path d="M13.5 9a.5.5 0 0 1 .5.5V11h1.5a.5.5 0 1 1 0 1H14v1.5a.5.5 0 1 1-1 0V12h-1.5a.5.5 0 0 1 0-1H13V9.5a.5.5 0 0 1 .5-.5"/>
+          </svg></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="mi_mapa"></div>
+<script src="assets/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/sweetalert2.all.min.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="assets/js/Ainfo.js"></script>
+</body>
+
+</html>
